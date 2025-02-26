@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebNova - Générateur de CV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      /* Styles généraux */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour le formulaire */
+.tab-pane {
+    padding: 20px 0;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+.btn-close {
+    z-index: 5;
+}
+
+/* Animation pour les éléments ajoutés/supprimés */
+.experience-item, .education-item, .skill-item, .interest-item, .reference-item, .language-item {
+    transition: all 0.3s ease;
+}
+
+/* Styles pour la prévisualisation du CV */
+.cv-container {
+    background-color: white;
+    padding: 40px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.cv-header {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 20px;
+}
+
+.cv-photo-container {
+    flex: 0 0 120px;
+    margin-right: 30px;
+}
+
+.cv-photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #007bff;
+}
+
+.cv-personal-info {
+    flex: 1;
+}
+
+.cv-personal-info h1 {
+    font-size: 2.2rem;
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.cv-personal-info h2 {
+    font-size: 1.4rem;
+    margin: 0 0 10px 0;
+    color: #007bff;
+    font-weight: 400;
+}
+
+.cv-description {
+    font-size: 1rem;
+    color: #666;
+}
+
+.cv-contact-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.cv-contact-info p {
+    margin: 5px 0;
+}
+
+.cv-section {
+    margin-bottom: 25px;
+}
+
+.cv-section h3 {
+    color: #007bff;
+    font-size: 1.3rem;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.cv-content {
+    padding-left: 10px;
+}
+
+.cv-experience-item, .cv-education-item {
+    margin-bottom: 20px;
+}
+
+.cv-experience-title, .cv-education-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.cv-experience-date, .cv-education-date {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.cv-experience-description, .cv-education-description {
+    margin-top: 5px;
+    color: #555;
+}
+
+.cv-skills-grid, .cv-languages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.cv-skill-item, .cv-language-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cv-skill-level, .cv-language-level {
+    color: #007bff;
+}
+
+.cv-placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Styles pour l'impression */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #cvPreview, #cvPreview * {
+        visibility: visible;
+    }
+    #cvPreview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Animation pour le chargement et l'enregistrement */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse-animation {
+    animation: pulse 0.5s ease;
+}
+
+/* Styles responsifs */
+@media (max-width: 992px) {
+    .cv-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .cv-photo-container {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .cv-skills-grid, .cv-languages-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-4 mb-4">
+        <h1>Générateur de CV Interactif</h1>
+        <p>Créez votre CV professionnel en temps réel</p>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Formulaire de saisie -->
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <ul class="nav nav-tabs card-header-tabs" id="formTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="personal-tab" data-bs-toggle="tab" href="#personal" role="tab">Informations personnelles</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="experience-tab" data-bs-toggle="tab" href="#experience" role="tab">Expériences</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="education-tab" data-bs-toggle="tab" href="#education" role="tab">Formation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="skills-tab" data-bs-toggle="tab" href="#skills" role="tab">Compétences</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="interests-tab" data-bs-toggle="tab" href="#interests" role="tab">Centres d'intérêt</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="references-tab" data-bs-toggle="tab" href="#references" role="tab">Références</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="languages-tab" data-bs-toggle="tab" href="#languages" role="tab">Langues</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <form id="cvForm">
+                            <div class="tab-content" id="formTabContent">
+                                <!-- Onglet Informations personnelles -->
+                                <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                                    <h3>Informations personnelles</h3>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="fullName" class="form-label">Nom complet*</label>
+                                            <input type="text" class="form-control" id="fullName" required>
+                                            <div class="invalid-feedback">Veuillez saisir votre nom complet.</div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="age" class="form-label">Âge*</label>
+                                            <input type="number" class="form-control" id="age" min="18" max="65" required>
+                                            <div class="invalid-feedback">L'âge doit être entre 18 et 65 ans.</div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="gender" class="form-label">Sexe</label>
+                                            <select class="form-select" id="gender">
+                                                <option value="">Sélectionner</option>
+                                                <option value="Homme">Homme</option>
+                                                <option value="Femme">Femme</option>
+                                                <option value="Autre">Autre</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="jobTitle" class="form-label">Titre du poste*</label>
+                                        <input type="text" class="form-control" id="jobTitle" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="currentSituation" class="form-label">Situation actuelle</label>
+                                        <input type="text" class="form-control" id="currentSituation">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control" id="description" rows="3"></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label">Email*</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                            <div class="invalid-feedback">Veuillez saisir un email valide.</div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="phone" class="form-label">Téléphone*</label>
+                                            <input type="tel" class="form-control" id="phone" required>
+                                            <div class="invalid-feedback">Veuillez saisir un numéro de téléphone valide.</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Adresse</label>
+                                        <input type="text" class="form-control" id="address">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profilePhoto" class="form-label">Photo de profil</label>
+                                        <input type="file" class="form-control" id="profilePhoto" accept="image/*">
+                                        <div class="mt-2">
+                                            <img id="photoPreview" class="img-thumbnail d-none" alt="Aperçu de la photo" style="max-width: 150px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Onglet Expériences professionnelles -->
+                                <div class="tab-pane fade" id="experience" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3>Expériences professionnelles</h3>
+                                        <button type="button" class="btn btn-primary btn-sm" id="addExperience">+ Ajouter</button>
+                                    </div>
+                                    <div id="experienceContainer">
+                                        <div class="experience-item border p-3 mb-3 position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-experience" aria-label="Close"></button>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Entreprise*</label>
+                                                    <input type="text" class="form-control company-name" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Poste*</label>
+                                                    <input type="text" class="form-control job-position" required>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Date de début*</label>
+                                                    <input type="month" class="form-control start-date" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Date de fin</label>
+                                                    <input type="month" class="form-control end-date">
+                                                    <div class="form-check mt-2">
+                                                        <input class="form-check-input current-job" type="checkbox">
+                                                        <label class="form-check-label">Poste actuel</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Description des missions</label>
+                                                <textarea class="form-control job-description" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Onglet Formation -->
+                                <div class="tab-pane fade" id="education" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3>Formation</h3>
+                                        <button type="button" class="btn btn-primary btn-sm" id="addEducation">+ Ajouter</button>
+                                    </div>
+                                    <div id="educationContainer">
+                                        <div class="education-item border p-3 mb-3 position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-education" aria-label="Close"></button>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Diplôme*</label>
+                                                    <input type="text" class="form-control degree-name" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Établissement*</label>
+                                                    <input type="text" class="form-control institution-name" required>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Année d'obtention*</label>
+                                                    <input type="number" class="form-control graduation-year" min="1960" max="2030" required>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control education-description" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Onglet Compétences -->
+                                <div class="tab-pane fade" id="skills" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3>Compétences</h3>
+                                        <button type="button" class="btn btn-primary btn-sm" id="addSkill">+ Ajouter</button>
+                                    </div>
+                                    <div id="skillsContainer">
+                                        <div class="skill-item border p-3 mb-3 position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-skill" aria-label="Close"></button>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Compétence*</label>
+                                                    <input type="text" class="form-control skill-name" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Niveau de maîtrise*</label>
+                                                    <select class="form-select skill-level" required>
+                                                        <option value="">Sélectionner</option>
+                                                        <option value="Débutant">Débutant</option>
+                                                        <option value="Intermédiaire">Intermédiaire</option>
+                                                        <option value="Avancé">Avancé</option>
+                                                        <option value="Expert">Expert</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Onglet Centres d'intérêt -->
+                                <div class="tab-pane fade" id="interests" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3>Centres d'intérêt</h3>
+                                        <button type="button" class="btn btn-primary btn-sm" id="addInterest">+ Ajouter</button>
+                                    </div>
+                                    <div id="interestsContainer">
+                                        <div class="interest-item border p-3 mb-3 position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-interest" aria-label="Close"></button>
+                                            <div class="mb-3">
+                                                <label class="form-label">Centre d'intérêt*</label>
+                                                <input type="text" class="form-control interest-name" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control interest-description" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Onglet Références -->
+                                <div class="tab-pane fade" id="references" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3>Références</h3>
+                                        <button type="button" class="btn btn-primary btn-sm" id="addReference">+ Ajouter</button>
+                                    </div>
+                                    <div id="referencesContainer">
+                                        <div class="reference-item border p-3 mb-3 position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-reference" aria-label="Close"></button>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Nom*</label>
+                                                    <input type="text" class="form-control reference-name" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Poste</label>
+                                                    <input type="text" class="form-control reference-position">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" class="form-control reference-email">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Téléphone</label>
+                                                    <input type="tel" class="form-control reference-phone">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Onglet Langues -->
+                                <div class="tab-pane fade" id="languages" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3>Langues</h3>
+                                        <button type="button" class="btn btn-primary btn-sm" id="addLanguage">+ Ajouter</button>
+                                    </div>
+                                    <div id="languagesContainer">
+                                        <div class="language-item border p-3 mb-3 position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-language" aria-label="Close"></button>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Langue*</label>
+                                                    <input type="text" class="form-control language-name" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Niveau*</label>
+                                                    <select class="form-select language-level" required>
+                                                        <option value="">Sélectionner</option>
+                                                        <option value="Débutant">Débutant</option>
+                                                        <option value="Intermédiaire">Intermédiaire</option>
+                                                        <option value="Avancé">Avancé</option>
+                                                        <option value="Bilingue">Bilingue</option>
+                                                        <option value="Langue maternelle">Langue maternelle</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-secondary" id="prevTab">Précédent</button>
+                                <div>
+                                    <button type="button" class="btn btn-success me-2" id="saveCV">Enregistrer</button>
+                                    <button type="button" class="btn btn-primary" id="nextTab">Suivant</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prévisualisation du CV -->
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="m-0">Prévisualisation</h3>
+                        <button type="button" class="btn btn-outline-primary" id="printCV">Imprimer</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="cvPreview" class="cv-container">
+                            <!-- La prévisualisation du CV sera mise à jour ici en temps réel -->
+                            <div class="cv-header">
+                                <div class="cv-photo-container">
+                                    <img id="cvPhoto" class="cv-photo" src="img/placeholder.png" alt="Photo de profil">
+                                </div>
+                                <div class="cv-personal-info">
+                                    <h1 id="cvName">Votre Nom</h1>
+                                    <h2 id="cvJobTitle">Titre du poste</h2>
+                                    <p id="cvDescription" class="cv-description">Courte description professionnelle</p>
+                                </div>
+                            </div>
+                            
+                            <div class="cv-contact-info">
+                                <p><strong>Email:</strong> <span id="cvEmail">email@exemple.com</span></p>
+                                <p><strong>Téléphone:</strong> <span id="cvPhone">01 23 45 67 89</span></p>
+                                <p><strong>Adresse:</strong> <span id="cvAddress">Votre adresse</span></p>
+                                <p><strong>Âge:</strong> <span id="cvAge">XX</span> ans | <strong>Sexe:</strong> <span id="cvGender">-</span></p>
+                                <p><strong>Situation actuelle:</strong> <span id="cvSituation">En recherche d'emploi</span></p>
+                            </div>
+
+                            <div class="cv-section">
+                                <h3>Expériences professionnelles</h3>
+                                <div id="cvExperiences" class="cv-content">
+                                    <!-- Les expériences seront ajoutées ici -->
+                                    <p class="cv-placeholder">Vos expériences professionnelles apparaîtront ici</p>
+                                </div>
+                            </div>
+
+                            <div class="cv-section">
+                                <h3>Formation</h3>
+                                <div id="cvEducation" class="cv-content">
+                                    <!-- La formation sera ajoutée ici -->
+                                    <p class="cv-placeholder">Vos formations apparaîtront ici</p>
+                                </div>
+                            </div>
+
+                            <div class="cv-section">
+                                <h3>Compétences</h3>
+                                <div id="cvSkills" class="cv-content">
+                                    <!-- Les compétences seront ajoutées ici -->
+                                    <p class="cv-placeholder">Vos compétences apparaîtront ici</p>
+                                </div>
+                            </div>
+
+                            <div class="cv-section">
+                                <h3>Langues</h3>
+                                <div id="cvLanguages" class="cv-content">
+                                    <!-- Les langues seront ajoutées ici -->
+                                    <p class="cv-placeholder">Vos langues apparaîtront ici</p>
+                                </div>
+                            </div>
+
+                            <div class="cv-section">
+                                <h3>Centres d'intérêt</h3>
+                                <div id="cvInterests" class="cv-content">
+                                    <!-- Les centres d'intérêt seront ajoutés ici -->
+                                    <p class="cv-placeholder">Vos centres d'intérêt apparaîtront ici</p>
+                                </div>
+                            </div>
+
+                            <div class="cv-section">
+                                <h3>Références</h3>
+                                <div id="cvReferences" class="cv-content">
+                                    <!-- Les références seront ajoutées ici -->
+                                    <p class="cv-placeholder">Vos références apparaîtront ici</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+      $(document).ready(function() {
+    // Variables globales
+    const tabs = ['personal', 'experience', 'education', 'skills', 'interests', 'references', 'languages'];
+    let currentTabIndex = 0;
+    let cvData = {
+        personal: {},
+        experiences: [],
+        education: [],
+        skills: [],
+        interests: [],
+        references: [],
+        languages: []
+    }});
+
+    // Initialisation
+    init();
+
+    function init() {
+        // Charger les données depuis le localStorage
+        loadCVData();
+        
+        // Initialiser les gestionnaires d'événements
+        initEventHandlers();
+        
+        // Initialiser les onglets
+        updateTabButtons();
+        
+        // Mettre à jour la prévisualisation initiale
+        updateCVPreview();
+    }
+
+    function loadCVData() {
+        const savedData = localStorage.getItem('cvData');
+        if (savedData) {
+            try {
+                cvData = JSON.parse(savedData);
+                // Remplir le formulaire avec les données enregistrées
+                populateForm();
+            } catch (error) {
+                console.error("Erreur lors du chargement des données :", error);
+            }
+        }
+    }
+
+    function populateForm() {
+        // Remplir les informations personnelles
+        if (cvData.personal) {
+            $('#fullName').val(cvData.personal.fullName || '');
+            $('#age').val(cvData.personal.age || '');
+            $('#gender').val(cvData.personal.gender || '');
+            $('#jobTitle').val(cvData.personal.jobTitle || '');
+            $('#currentSituation').val(cvData.personal.currentSituation || '');
+            $('#description').val(cvData.personal.description || '');
+            $('#email').val(cvData.personal.email || '');
+            $('#phone').val(cvData.personal.phone || '');
+            $('#address').val(cvData.personal.address || '');
+            
+            // Si une photo de profil existe, l'afficher
+            if (cvData.personal.profilePhoto) {
+                $('#photoPreview').attr('src', cvData.personal.profilePhoto).removeClass('d-none');
+            }
+        }
+
+        // Remplir les expériences professionnelles
+        if (cvData.experiences && cvData.experiences.length > 0) {
+            $('#experienceContainer').empty();
+            cvData.experiences.forEach(exp => {
+                const newExp = createExperienceItem();
+                newExp.find('.company-name').val(exp.company || '');
+                newExp.find('.job-position').val(exp.position || '');
+                newExp.find('.start-date').val(exp.startDate || '');
+                newExp.find('.end-date').val(exp.endDate || '');
+                newExp.find('.current-job').prop('checked', exp.currentJob || false);
+                newExp.find('.job-description').val(exp.description || '');
+                
+                if (exp.currentJob) {
+                    newExp.find('.end-date').prop('disabled', true);
+                }
+                
+                $('#experienceContainer').append(newExp);
+            });
+        }
+
+        // Remplir les formations
+        if (cvData.education && cvData.education.length > 0) {
+            $('#educationContainer').empty();
+            cvData.education.forEach(edu => {
+                const newEdu = createEducationItem();
+                newEdu.find('.degree-name').val(edu.degree || '');
+                newEdu.find('.institution-name').val(edu.institution || '');
+                newEdu.find('.graduation-year').val(edu.year || '');
+                newEdu.find('.education-description').val(edu.description || '');
+                $('#educationContainer').append(newEdu);
+            });
+        }
+
+        // Remplir les compétences
+        if (cvData.skills && cvData.skills.length > 0) {
+            $('#skillsContainer').empty();
+            cvData.skills.forEach(skill => {
+                const newSkill = createSkillItem();
+                newSkill.find('.skill-name').val(skill.name || '');
+                newSkill.find('.skill-level').val(skill.level || '');
+                $('#skillsContainer').append(newSkill);
+            });
+        }
+
+        // Remplir les centres d'intérêt
+        if (cvData.interests && cvData.interests.length > 0) {
+            $('#interestsContainer').empty();
+            cvData.interests.forEach(interest => {
+                const newInterest = createInterestItem();
+                newInterest.find('.interest-name').val(interest.name || '');
+                newInterest.find('.interest-description').val(interest.description || '');
+                $('#interestsContainer').append(newInterest);
+            });
+        }
+
+        // Remplir les références
+        if (cvData.references && cvData.references.length > 0) {
+            $('#referencesContainer').empty();
+            cvData.references.forEach(ref => {
+                const newRef = createReferenceItem();
+                newRef.find('.reference-name').val(ref.name || '');
+                newRef.find('.reference-position').val(ref.position || '');
+                newRef.find('.reference-email').val(ref.email || '');
+                newRef.find('.reference-phone').val(ref.phone || '');
+                $('#referencesContainer').append(newRef);
+            });
+        }
+
+        // Remplir les langues
+        if (cvData.languages && cvData.languages.length > 0) {
+            $('#languagesContainer').empty();
+            cvData.languages.forEach(lang => {
+                const newLang = createLanguageItem();
+                newLang.find('.language-name').val(lang.name || '');
+                newLang.find('.language-level').val(lang.level || '');
+                $('#languagesContainer').append(newLang);
+            });
+        }
+    }
+
+    function initEventHandlers() {
+        // Navigation entre les onglets
+        $('#nextTab').click(function() {
+            if (currentTabIndex < tabs.length - 1) {
+                currentTabIndex++;
+                showTab(tabs[currentTabIndex]);
+                updateTabButtons();
+            }
+        });
+
+        $('#prevTab').click(function() {
+            if (currentTabIndex > 0) {
+                currentTabIndex--;
+                showTab(tabs[currentTabIndex]);
+                updateTabButtons();
+            }
+        });
+
+        // Basculer manuellement entre les onglets
+        $('#formTabs a').click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+            currentTabIndex = tabs.indexOf($(this).attr('href').substring(1));
+            updateTabButtons();
+        });
+
+        // Ajouter des expériences professionnelles
+        $('#addExperience').click(function() {
+            const newExp = createExperienceItem();
+            $('#experienceContainer').append(newExp);
+        });
+
+        // Supprimer une expérience
+        $(document).on('click', '.remove-experience', function() {
+            $(this).closest('.experience-item').fadeOut(300, function() {
+                $(this).remove();
+                updateCVPreview();
+            });
+        });
+
+        // Poste actuel (désactiver la date de fin)
+        $(document).on('change', '.current-job', function() {
+            const endDateInput = $(this).closest('.experience-item').find('.end-date');
+            endDateInput.prop('disabled', $(this).is(':checked'));
+            if ($(this).is(':checked')) {
+                endDateInput.val('');
+            }
+        });
+
+        // Ajouter une formation
+        $('#addEducation').click(function() {
+            const newEdu = createEducationItem();
+            $('#educationContainer').append(newEdu);
+        });
+
+        // Supprimer une formation
+        $(document).on('click', '.remove-education', function() {
+            $(this).closest('.education-item').fadeOut(300, function() {
+                $(this).remove();
+                updateCVPreview();
+            });
+        });
+
+        // Ajouter une compétence
+        $('#addSkill').click(function() {
+            const newSkill = createSkillItem();
+            $('#skillsContainer').append(newSkill);
+        });
+
+        // Supprimer une compétence
+        $(document).on('click', '.remove-skill', function() {
+            $(this).closest('.skill-item').fadeOut(300, function() {
+                $(this).remove();
+                updateCVPreview();
+            });
+        });
+
+        // Ajouter un centre d'intérêt
+        $('#addInterest').click(function() {
+            const newInterest = createInterestItem();
+            $('#interestsContainer').append(newInterest);
+        });
+
+        // Supprimer un centre d'intérêt
+        $(document).on('click', '.remove-interest', function() {
+            $(this).closest('.interest-item').fadeOut(300, function() {
+                $(this).remove();
+                updateCVPreview();
+            });
+        });
+
+        // Ajouter une référence
+        $('#addReference').click(function() {
+            const newRef = createReferenceItem();
+            $('#referencesContainer').append(newRef);
+        });
+
+        // Supprimer une référence
+        $(document).on('click', '.remove-reference', function() {
+            $(this).closest('.reference-item').fadeOut(300, function() {
+                $(this).remove();
+                updateCVPreview();
+            });
+        });
+
+        // Ajouter une langue
+        $('#addLanguage').click(function() {
+            const newLang = createLanguageItem();
+            $('#languagesContainer').append(newLang);
+        });
+
+        // Supprimer une langue
+        $(document).on('click', '.remove-language', function() {
+            $(this).closest('.language-item').fadeOut(300, function() {
+                $(this).remove();
+                updateCVPreview();
+            });
+        });
+
+        // Prévisualisation de la photo de profil
+        $('#profilePhoto').change(function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#photoPreview').attr('src', e.target.result).removeClass('d-none');
+                    updateCVPreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Sauvegarder le CV
+        $('#saveCV').click(function() {
+            if (validateForm()) {
+                saveCV();
+                // Animation de sauvegarde
+                $('#cvPreview').addClass('pulse-animation');
+                setTimeout(() => {
+                    $('#cvPreview').removeClass('pulse-animation');
+                }, 500);
+                
+                // Message de succès
+                const saveAlert = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                    'Votre CV a été enregistré avec succès !' +
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                    '</div>');
+                $('.card-header').after(saveAlert);
+                
+                // Fermer l'alerte après quelques secondes
+                setTimeout(() => {
+                    saveAlert.alert('close');
+                }, 3000);
+            }
+        });
+
+        // Imprimer le CV
+        $('#printCV').click(function() {
+            window.print();
+        });
+
+        // Mise à jour en temps réel de la prévisualisation
+        $(document).on('input change', 'input, textarea, select', function() {
+            updateCVPreview();
+        });
+    }
+
+    function showTab(tabId) {
+        $('#formTabs a[href="#' + tabId + '"]').tab('show');
+    }
+
+    function updateTabButtons() {
+        // Afficher/masquer les boutons suivant/précédent en fonction de l'onglet actuel
+        if (currentTabIndex === 0) {
+            $('#prevTab').addClass('d-none');
+        } else {
+            $('#prevTab').removeClass('d-none');
+        }
+
+        if (currentTabIndex === tabs.length - 1) {
+            $('#nextTab').addClass('d-none');
+        } else {
+            $('#nextTab').removeClass('d-none');
+        }
+    }
+
+    function createExperienceItem() {
+        return $(`
+            <div class="experience-item border p-3 mb-3 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-experience" aria-label="Close"></button>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Entreprise*</label>
+                        <input type="text" class="form-control company-name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Poste*</label>
+                        <input type="text" class="form-control job-position" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date de début*</label>
+                        <input type="month" class="form-control start-date" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date de fin</label>
+                        <input type="month" class="form-control end-date">
+                        <div class="form-check mt-2">
+                            <input class="form-check-input current-job" type="checkbox">
+                            <label class="form-check-label">Poste actuel</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description des missions</label>
+                    <textarea class="form-control job-description" rows="3"></textarea>
+                </div>
+            </div>
+        `);
+    }
+
+    function createEducationItem() {
+        return $(`
+            <div class="education-item border p-3 mb-3 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-education" aria-label="Close"></button>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Diplôme*</label>
+                        <input type="text" class="form-control degree-name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Établissement*</label>
+                        <input type="text" class="form-control institution-name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Année d'obtention*</label>
+                        <input type="number" class="form-control graduation-year" min="1960" max="2030" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control education-description" rows="3"></textarea>
+                </div>
+            </div>
+        `);
+    }
+
+    function createSkillItem() {
+        return $(`
+            <div class="skill-item border p-3 mb-3 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-skill" aria-label="Close"></button>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Compétence*</label>
+                        <input type="text" class="form-control skill-name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Niveau de maîtrise*</label>
+                        <select class="form-select skill-level" required>
+                            <option value="">Sélectionner</option>
+                            <option value="Débutant">Débutant</option>
+                            <option value="Intermédiaire">Intermédiaire</option>
+                            <option value="Avancé">Avancé</option>
+                            <option value="Expert">Expert</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+
+    function createInterestItem() {
+        return $(`
+            <div class="interest-item border p-3 mb-3 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-interest" aria-label="Close"></button>
+                <div class="mb-3">
+                    <label class="form-label">Centre d'intérêt*</label>
+                    <input type="text" class="form-control interest-name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control interest-description" rows="2"></textarea>
+                </div>
+            </div>
+        `);
+    }
+
+    function createReferenceItem() {
+        return $(`
+            <div class="reference-item border p-3 mb-3 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-reference" aria-label="Close"></button>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom*</label>
+                        <input type="text" class="form-control reference-name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Poste</label>
+                        <input type="text" class="form-control reference-position">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control reference-email">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Téléphone</label>
+                        <input type="tel" class="form-control reference-phone">
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+
+    function createLanguageItem() {
+        return $(`
+            <div class="language-item border p-3 mb-3 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 remove-language" aria-label="Close"></button>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Langue*</label>
+                        <input type="text" class="form-control language-name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Niveau*</label>
+                        <select class="form-select language-level" required>
+                            <option value="">Sélectionner</option>
+                            <option value="Débutant">Débutant</option>
+                            <option value="Intermédiaire">Intermédiaire</option>
+                            <option value="Avancé">Avancé</option>
+                            <option value="Bilingue">Bilingue</option>
+                            <option value="Langue maternelle">Langue maternelle</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+
+    function updateCVPreview() {
+        // Mettre à jour les informations personnelles
+        const fullName = $('#fullName').val();
+        const age = $('#age').val();
+        const gender = $('#gender').val();
+        const jobTitle = $('#jobTitle').val();
+        const currentSituation = $('#currentSituation').val();
+        const description = $('#description').val();
+        const email = $('#email').val();
+        const phone = $('#phone').val();
+        const address = $('#address').val();
+
+        $('#cvName').text(fullName || 'Votre Nom');
+        $('#cvJobTitle').text(jobTitle || 'Titre du poste');
+        $('#cvDescription').text(description || 'Courte description professionnelle');
+        $('#cvEmail').text(email || 'email@exemple.com');
+        $('#cvPhone').text(phone || '01 23 45 67 89');
+        $('#cvAddress').text(address || 'Votre adresse');
+        $('#cvAge').text(age || 'XX');
+        $('#cvGender').text(gender || '-');
+        $('#cvSituation').text(currentSituation || 'En recherche d\'emploi');
+
+        // Mettre à jour la photo de profil
+        if ($('#photoPreview').attr('src') && !$('#photoPreview').hasClass('d-none')) {
+            $('#cvPhoto').attr('src', $('#photoPreview').attr('src'));
+        }
+
+        // Mettre à jour les expériences professionnelles
+        updateExperiencesPreview();
+
+        // Mettre à jour les formations
+        updateEducationPreview();
+
+        // Mettre à jour les compétences
+        updateSkillsPreview();
+
+        // Mettre à jour les centres d'intérêt
+        updateInterestsPreview();
+
+        // Mettre à jour les références
+        updateReferencesPreview();
+
+        // Mettre à jour les langues
+        updateLanguagesPreview();
+    }
+
+    function updateExperiencesPreview() {
+        const experienceItems = $('.experience-item');
+        if (experienceItems.length === 0) {
+            $('#cvExperiences').html('<p class="cv-placeholder">Vos expériences professionnelles apparaîtront ici</p>');
+            return;
+        }
+
+        let html = '';
+        experienceItems.each(function() {
+            const company = $(this).find('.company-name').val();
+            const position = $(this).find('.job-position').val();
+            const startDate = $(this).find('.start-date').val();
+            const endDate = $(this).find('.current-job').is(':checked') ? 'Présent' : $(this).find('.end-date').val();
+            const description = $(this).find('.job-description').val();
+
+            if (company || position) {
+                html += `
+                    <div class="cv-experience-item">
+                        <div class="cv-experience-title">${position || ''} - ${company || ''}</div>
+                        <div class="cv-experience-date">${formatDate(startDate) || ''} - ${formatDate(endDate) || ''}</div>
+                        <div class="cv-experience-description">${description || ''}</div>
+                    </div>
+                `;
+            }
+        });
+
+        $('#cvExperiences').html(html || '<p class="cv-placeholder">Vos expériences professionnelles apparaîtront ici</p>');
+    }
+
+    function updateEducationPreview() {
+        const educationItems = $('.education-item');
+        if (educationItems.length === 0) {
+            $('#cvEducation').html('<p class="cv-placeholder">Vos formations apparaîtront ici</p>');
+            return;
+        }
+
+        let html = '';
+        educationItems.each(function() {
+            const degree = $(this).find('.degree-name').val();
+            const institution = $(this).find('.institution-name').val();
+            const year = $(this).find('.graduation-year').val();
+            const description = $(this).find('.education-description').val();
+
+            if (degree || institution) {
+                html += `
+                    <div class="cv-education-item">
+                        <div class="cv-education-title">${degree || ''} - ${institution || ''}</div>
+                        <div class="cv-education-date">${year || ''}</div>
+                        <div class="cv-education-description">${description || ''}</div>
+                    </div>
+                `;
+            }
+        });
+
+        $('#cvEducation').html(html || '<p class="cv-placeholder">Vos formations apparaîtront ici</p>');
+    }
+
+    function updateSkillsPreview() {
+        const skillItems = $('.skill-item');
+        if (skillItems.length === 0) {
+            $('#cvSkills').html('<p class="cv-placeholder">Vos compétences apparaîtront ici</p>');
+            return;
+        }
+
+        let html = '<div class="cv-skills-grid">';
+        skillItems.each(function() {
+            const name = $(this).find('.skill-name').val();
+            const level = $(this).find('.skill-level').val();
+
+            if (name) {
+                html += `
+                    <div class="cv-skill-item">
+                        <span>${name || ''}</span>
+                        <span class="cv-skill-level">${level || ''}</span>
+                    </div>
+                `;
+            }
+        });
+        html += '</div>';
+
+        $('#cvSkills').html(html || '<p class="cv-placeholder">Vos compétences apparaîtront ici</p>');
+    }
+
+    function updateInterestsPreview() {
+        const interestItems = $('.interest-item');
+        if (interestItems.length === 0) {
+            $('#cvInterests').html('<p class="cv-placeholder">Vos centres d\'intérêt apparaîtront ici</p>');
+            return;
+        }
+
+        let html = '';
+        interestItems.each(function() {
+            const name = $(this).find('.interest-name').val();
+            const description = $(this).find('.interest-description').val();
+
+            if (name) {
+                html += `
+                    <div class="cv-interest-item">
+                        <strong>${name || ''}</strong>
+                        ${description ? ': ' + description : ''}
+                    </div>
+                `;
+            }
+        });
+
+        $('#cvInterests').html(html || '<p class="cv-placeholder">Vos centres d\'intérêt apparaîtront ici</p>');
+    }
+
+    function updateReferencesPreview() {
+        const referenceItems = $('.reference-item');
+        if (referenceItems.length === 0) {
+            $('#cvReferences').html('<p class="cv-placeholder">Vos références apparaîtront ici</p>');
+            return;
+        }
+
+        let html = '';
+        referenceItems.each(function() {
+            const name = $(this).find('.reference-name').val();
+            const position = $(this).find('.reference-position').val();
+            const email = $(this).find('.reference-email').val();
+            const phone = $(this).find('.reference-phone').val();
+
+            if (name) {
+                html += `
+                    <div class="cv-reference-item mb-2">
+                        <div><strong>${name || ''}</strong>${position ? ' - ' + position : ''}</div>
+                        ${email ? '<div>Email: ' + email + '</div>' : ''}
+                        ${phone ? '<div>Tél: ' + phone + '</div>' : ''}
+                    </div>
+                `;
+            }
+        });
+
+        $('#cvReferences').html(html || '<p class="cv-placeholder">Vos références apparaîtront ici</p>');
+    }
+
+    function updateLanguagesPreview() {
+        const languageItems = $('.language-item');
+        if (languageItems.length === 0) {
+            $('#cvLanguages').html('<p class="cv-placeholder">Vos langues apparaîtront ici</p>');
+            return;
+        }
+
+        let html = '<div class="cv-languages-grid">';
+        languageItems.each(function() {
+            const name = $(this).find('.language-name').val();
+            const level = $(this).find('.language-level').val();
+
+            if (name) {
+                html += `
+                    <div class="cv-language-item">
+                        <span>${name || ''}</span>
+                        <span class="cv-language-level">${level || ''}</span>
+                    </div>
+                `;
+            }
+        });
+        html += '</div>';
+
+        $('#cvLanguages').html(html || '<p class="cv-placeholder">Vos langues apparaîtront ici</p>');
+    }
+
+    function saveCV() {
+        // Collecter les informations personnelles
+        cvData.personal = {
+            fullName: $('#fullName').val(),
+            age: $('#age').val(),
+            gender: $('#gender').val(),
+            jobTitle: $('#jobTitle').val(),
+            currentSituation: $('#currentSituation').val(),
+            description: $('#description').val(),
+            email: $('#email').val(),
+            phone: $('#phone').val(),
+            address: $('#address').val(),
+            profilePhoto: $('#photoPreview').hasClass('d-none') ? '' : $('#photoPreview').attr('src')
+        };
+
+        // Collecter les expériences professionnelles
+        cvData.experiences = [];
+        $('.experience-item').each(function() {
+            const isCurrentJob = $(this).find('.current-job').is(':checked');
+            cvData.experiences.push({
+                company: $(this).find('.company-name').val(),
+                position: $(this).find('.job-position').val(),
+                startDate: $(this).find('.start-date').val(),
+                endDate: isCurrentJob ? '' : $(this).find('.end-date').val(),
+                currentJob: isCurrentJob,
+                description: $(this).find('.job-description').val()
+            });
+        });
+
+        // Collecter les formations
+        cvData.education = [];
+        $('.education-item').each(function() {
+            cvData.education.push({
+                degree: $(this).find('.degree-name').val(),
+                institution: $(this).find('.institution-name').val(),
+                year: $(this).find('.graduation-year').val(),
+                description: $(this).find('.education-description').val()
+            });
+        });
+
+        // Collecter les compétences
+        cvData.skills = [];
+        $('.skill-item').each(function() {
+            cvData.skills.push({
+                name: $(this).find('.skill-name').val(),
+                level: $(this).find('.skill-level').val()
+            });
+        });
+
+        // Collecter les centres d'intérêt
+        cvData.interests = [];
+        $('.interest-item').each(function() {
+            cvData.interests.push({
+                name: $(this).find('.interest-name').val(),
+                description: $(this).find('.interest-description').val()
+            });
+        });
+
+        // Collecter les références
+        cvData.references = [];
+        $('.reference-item').each(function() {
+            cvData.references.push({
+                name: $(this).find('.reference-name').val(),
+                position: $(this).find('.reference-position').val(),
+                email: $(this).find('.reference-email').val(),
+                phone: $(this).find('.reference-phone').val()
+            });
+        });
+
+        // Collecter les langues
+        cvData.languages = [];
+        $('.language-item').each(function() {
+            cvData.languages.push({
+                name: $(this).find('.language-name').val(),
+                level: $(this).find('.language-level').val()
+            });
+        });
+
+        // Sauvegarder dans le localStorage
+        localStorage.setItem('cvData', JSON.stringify(cvData));
+    }
+
+  
+    </script>
+</body>
+</html>
