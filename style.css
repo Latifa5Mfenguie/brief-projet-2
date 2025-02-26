@@ -8,4 +8,46 @@ h1, h2 { color: #2d3748; }
 
 footer { background-color: #2d3748; color: white; text-align: center; padding: 20px 0; }
 
+.image-container {
+    position: relative;
+    width: 900px;
+    height: 400px;
+    
+  }
+  
+  .image {
+    position: absolute;
+    width: 250px; /* Ajuste la taille des images */
+    height: 300px;
+    top: 50px;
+    left: 400px;
+    
+  }
+  
+  .image1 {
+    top: 0;
+    left: 0;
+  }
+  
+  .image2 {
+    top: 20px; /* Décalage vertical */
+    left: 300px; /* Décalage horizontal */
+  }
+  
+  .image3 {
+    top: 50px; /* Décalage vertical */
+    left: 60px; /* Décalage horizontal */
+  }
+
+  .image4 {
+    top: 40px; /* Décalage vertical */
+    left: 200px; /* Décalage horizontal */
+  }
+  .image5 {
+    top: 80px; /* Décalage vertical */
+    left: 100px; /* Décalage horizontal */
+  }
+  
+  
+
 

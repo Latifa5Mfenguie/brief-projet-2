@@ -5,56 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur de CV</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Soulignement personnalisé pour le titre actif */
+        .active-title {
+          position: relative;
+        }
+    
+        .active-title::after {
+          content: '';
+          position: absolute;
+          bottom: -2px; /* Distance du trait sous le texte */
+          left: 0;
+          width: 100%;
+          height: 2px; /* Épaisseur du trait */
+          background-color: #FF6347; /* Couleur du trait */
+        }
+      </style>
+    
 </head>
 <body class="bg-gray-100">
     <!-- HEADER -->
     <header class="bg-white shadow-md">
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
-            <div class="text-xl font-bold text-green-600">WEB NOVA</div>
-            <nav class="space-x-6">
-                <a href="#" class="text-blue-600 font-semibold">Accueil</a>
-                <a href="#" class="text-gray-600">À propos</a>
-                <a href="#" class="text-gray-600">Aide/FAQ</a>
-                <a href="#" class="bg-red-500 text-white px-4 py-2 rounded">Créer mon CV</a>
-                <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded">S’abonner</a>
+            <div><img src="image/logo6-removebg-preview.png" alt="logo" class="w-74 h-32"></div>
+            <nav class="space-x-9">
+                <a href="/" class="text-blue-600 font-semibold " id="home-title" >Accueil</a>
+                <a href="" class="text-blue-600 font-semibold ">À propos</a>
+                <a href="#" class="text-blue-600 font-semibold ">Aide/FAQ</a>
+                <a href="/GenerateurCV.html" class="bg-red-100 text-red-700 px-4 py-2 rounded-full border-2 border-red-700 font-bold" >Créer mon CV</a>
+                <a href="#" class="bg-blue-100 text-blue-900 px-4 py-2 rounded-full border-2 border-blue-900 font-bold">S’abonner</a>
             </nav>
         </div>
     </header>
 
     <!-- SECTION HERO -->
-    <section class="bg-white py-12 text-center">
+    <section class="bg-gray-100 py-12 text-center">
         <div class="container mx-auto flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 text-left px-6">
-                <h1 class="text-3xl font-bold">Un CV professionnel en un clic !</h1>
+                <h1 class="text-5xl font-bold leading-normal font-sans">Un CV Professionnelle En Un Clic !</h1>
                 <p class="mt-4 text-gray-600">Gagnez du temps et créez un CV de qualité en toute simplicité. Modifiez, prévisualisez et téléchargez votre CV instantanément.</p>
-                <a href="#" class="mt-4 inline-block bg-green-500 text-white px-6 py-2 rounded">Commencer maintenant</a>
+                <a href="/GenerateurCV.html" class="mt-4 inline-block bg-green-100 text-green-900 font-bold px-6 py-2 rounded-full">Commencer maintenant</a>
             </div>
-            <div class="md:w-1/2">
-                <img src="images/cv-example.png" alt="Modèles de CV" class="mx-auto">
+            <div class="md:w-1/2 image-container">
+                <img src="image/cv10.jpg" alt="Modèles de CV" class="mx-auto image image1">
+                <img src="image/cv2.jpg" alt="Modèles de CV" class="mx-auto image image2">
+                <img src="image/cv11.jpg" alt="Modèles de CV" class="mx-auto image image3">
+                <img src="image/cv8.jpg" alt="Modèles de CV" class="mx-auto image image4">
+                <img src="image/cv7.jpg" alt="Modèles de CV" class="mx-auto image image5">
             </div>
         </div>
     </section>
 
     <!-- SECTION AVANTAGES -->
-    <section class="bg-gray-100 py-12">
+    <section class="bg-white py-12">
         <div class="container mx-auto text-center">
-            <h2 class="text-2xl font-bold text-green-600">Pourquoi utiliser notre générateur de CV ?</h2>
-            <p class="mt-4 text-gray-600">Notre outil vous permet de créer facilement un CV percutant grâce à une interface intuitive et des modèles professionnels adaptés à tous les domaines.</p>
+            <div class="container mx-auto flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 text-left px-6">
+            <h2 class="text-5xl font-bold text-green-600">Pourquoi utiliser notre générateur de CV ?</h2>
+            <p class="mt-4 text-gray-600">Notre outil vous permet de créer facilement <br>un CV percutant grâce à une interface intuitive et des modèles professionnels <br> adaptés à tous les domaines.</p>
+        </div>
+        <div class="md:w-1/2 image-container"><img src="image/m2.jpg" alt="image" class="w-full h-full object-contain"></div>
+        </div>
             <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="bg-white p-6 shadow rounded">
-                    <p class="font-semibold">Facile à utiliser</p>
-                    <p class="text-sm text-gray-600">Remplissez un simple formulaire et obtenez un CV structuré.</p>
+                <div class="bg-blue-100 p-6 shadow rounded flex">
+                    <div class="w-25 h-25"><img src="image/facile.png" alt="" ></div>
+                    <div><p class="font-semibold">Facile à utiliser</p>
+                    <p class="text-sm text-gray-600">Remplissez un simple formulaire et obtenez un CV structuré.</p></div>
                 </div>
-                <div class="bg-white p-6 shadow rounded">
+                <div class="bg-red-100 p-6 shadow rounded">
                     <p class="font-semibold">Modèles professionnels</p>
                     <p class="text-sm text-gray-600">Sélectionnez un design adapté à votre secteur.</p>
                 </div>
-                <div class="bg-white p-6 shadow rounded">
+                <div class="bg-gray-100 p-6 shadow rounded">
                     <p class="font-semibold">Prévisualisation en temps réel</p>
                     <p class="text-sm text-gray-600">Visualisez votre CV avant de le télécharger.</p>
                 </div>
-                <div class="bg-white p-6 shadow rounded">
+                <div class="bg-green-100 p-6 shadow rounded">
                     <p class="font-semibold">Téléchargement en PDF</p>
                     <p class="text-sm text-gray-600">Exportez votre CV en un clic.</p>
                 </div>
@@ -63,7 +91,7 @@
     </section>
 
     <!-- SECTION COMMENT ÇA MARCHE -->
-    <section class="bg-white py-12 text-center">
+    <section class="bg-green-100 py-12 text-center">
         <h2 class="text-2xl font-bold">Comment ça marche ?</h2>
         <div class="mt-8 flex flex-col md:flex-row justify-center space-x-6">
             <div class="bg-blue-100 p-6 shadow rounded">
@@ -90,6 +118,20 @@
         <p>&copy; 2025 WEB NOVA. Tous droits réservés.</p>
     </footer>
 
+    <script>
+        // Obtenez l'URL actuelle
+        const currentPath = window.location.pathname;
+    
+        // Vérifiez si la page correspond à la page d'accueil
+        if (currentPath === '/') {
+          // Ajoutez la classe "active-title" au titre de la page d'accueil
+          const homeTitle = document.getElementById('home-title');
+          homeTitle.classList.add('active-title');
+        }
+      </script>
+    
+      
+      
     <script src="script.js"></script>
 </body>
 </html>
