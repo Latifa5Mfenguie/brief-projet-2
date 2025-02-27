@@ -23,6 +23,27 @@
           background-color: #FF6347; /* Couleur du trait */
         }
       </style>
+      <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .hover-animate:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+
+    
     
 </head>
 <body class="bg-gray-100">
@@ -41,7 +62,7 @@
     </header>
 
     <!-- SECTION HERO -->
-    <section class="bg-gray-100 py-12 text-center">
+    <section class="bg-gradient-to-r from-blue-50 to-gray-500 py-12 text-center">
         <div class="container mx-auto flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 text-left px-6">
                 <h1 class="text-5xl font-bold leading-normal font-sans">Un CV Professionnelle En Un Clic !</h1>
@@ -66,58 +87,116 @@
             <h2 class="text-5xl font-bold text-green-600">Pourquoi utiliser notre générateur de CV ?</h2>
             <p class="mt-4 text-gray-600">Notre outil vous permet de créer facilement <br>un CV percutant grâce à une interface intuitive et des modèles professionnels <br> adaptés à tous les domaines.</p>
         </div>
-        <div class="md:w-1/2 image-container"><img src="image/m2.jpg" alt="image" class="w-full h-full object-contain"></div>
+        <div class="md:w-1/2 image-container"><img src="image/c2-removebg-preview.png" alt="image" class="w-full h-full object-contain"></div>
         </div>
             <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div class="bg-blue-100 p-6 shadow rounded flex">
-                    <div class="w-25 h-25"><img src="image/facile.png" alt="" ></div>
+                    <div ><img src="image/facile.png" class=" w-12 h-12" ></div>
                     <div><p class="font-semibold">Facile à utiliser</p>
                     <p class="text-sm text-gray-600">Remplissez un simple formulaire et obtenez un CV structuré.</p></div>
                 </div>
-                <div class="bg-red-100 p-6 shadow rounded">
-                    <p class="font-semibold">Modèles professionnels</p>
-                    <p class="text-sm text-gray-600">Sélectionnez un design adapté à votre secteur.</p>
+                <div >
+                    <div class="bg-red-100 p-6 shadow rounded flex">
+                    <div><img src="image/m5.png" class=" w-12 h-12" alt=""></div>
+                    <div><p class="font-semibold">Modèles professionnels</p>
+                    <p class="text-sm text-gray-600">Sélectionnez un design adapté à votre secteur.</p></div>
                 </div>
-                <div class="bg-gray-100 p-6 shadow rounded">
-                    <p class="font-semibold">Prévisualisation en temps réel</p>
-                    <p class="text-sm text-gray-600">Visualisez votre CV avant de le télécharger.</p>
                 </div>
-                <div class="bg-green-100 p-6 shadow rounded">
-                    <p class="font-semibold">Téléchargement en PDF</p>
-                    <p class="text-sm text-gray-600">Exportez votre CV en un clic.</p>
+                <div class="bg-gray-100 p-6 shadow rounded flex">
+                    <div><img src="image/m6.png" class=" w-12 h-12" alt=""></div>
+                    <div><p class="font-semibold">Prévisualisation en temps réel</p>
+                    <p class="text-sm text-gray-600">Visualisez votre CV avant de le télécharger.</p></div>
+                </div>
+                <div class="bg-green-100 p-6 shadow rounded flex">
+                    <div><img src="image/m8.png" class=" w-12 h-12" alt=""></div>
+                    <div><p class="font-semibold">Téléchargement en PDF</p>
+                    <p class="text-sm text-gray-600">Exportez votre CV en un clic.</p></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- SECTION COMMENT ÇA MARCHE -->
-    <section class="bg-green-100 py-12 text-center">
-        <h2 class="text-2xl font-bold">Comment ça marche ?</h2>
-        <div class="mt-8 flex flex-col md:flex-row justify-center space-x-6">
-            <div class="bg-blue-100 p-6 shadow rounded">
-                <p class="font-semibold">1. Remplissez le formulaire</p>
-                <p class="text-sm text-gray-600">Ajoutez vos informations personnelles et professionnelles.</p>
+    
+    <section class="container mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6 fade-in">Comment Générer Automatiquement votre CV ?</h2>
+        <div class="flex flex-col md:flex-row gap-6 items-center">
+            <div class="text-center fade-in hover-animate" style="animation-delay: 0.2s;">
+                <img src="image/m1-removebg-preview.png" alt="Étape 1" class="w-80 h-80 object-cover rounded-md mb-4">
+                <h3 class="text-2xl text-green-500 font-semibold mb-2"><span class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-gray-400">
+                    1</span>Remplissez le formulaire</h3>
+                <p class="text-gray-600">Entrez vos informations personnelles, expériences et compétences.</p>
             </div>
-            <div class="bg-green-100 p-6 shadow rounded">
-                <p class="font-semibold">2. Sélectionnez un modèle</p>
-                <p class="text-sm text-gray-600">Choisissez un design qui correspond à votre domaine.</p>
+            <div class="text-center fade-in hover-animate" style="animation-delay: 0.4s;">
+                <img src="image/as1-removebg-preview.png" alt="Étape 2" class="w-80 h-80 object-cover rounded-md mb-4">
+                <h3 class="text-2xl text-blue-500 font-semibold mb-2"><span class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-gray-400">
+                    2</span> Choisissez un modèle</h3>
+                <p class="text-gray-600">Sélectionnez un design professionnel qui correspond à votre style.</p>
             </div>
-            <div class="bg-yellow-100 p-6 shadow rounded">
-                <p class="font-semibold">3. Prévisualisez votre CV</p>
-                <p class="text-sm text-gray-600">Vérifiez et ajustez votre CV en temps réel.</p>
+            <div class="text-center fade-in hover-animate" style="animation-delay: 0.6s;">
+                <img src="image/as2-removebg-preview.png" alt="Étape 3" class="w-80 h-80 object-cover rounded-md mb-4">
+                <h3 class="text-2xl text-red-500 font-semibold mb-2"><span class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-gray-400">
+                    3</span> Téléchargez votre CV</h3>
+                <p class="text-gray-600">Générez et téléchargez votre CV en un clic au format PDF.</p>
             </div>
-            <div class="bg-red-100 p-6 shadow rounded">
-                <p class="font-semibold">4. Téléchargez en PDF</p>
-                <p class="text-sm text-gray-600">Obtenez votre CV prêt à être envoyé.</p>
+        </div>
+    </section>
+
+    <section class="container mx-auto text-center bg-gradient-to-r from-green-100 to-red-100 ">
+        <h2 class="text-3xl font-bold mb-6">Témoignages de Nos Utilisateurs</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Témoignage 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                <img src="image/m2.jpg" alt="Utilisateur 1" class="w-50 h-50 mx-auto rounded-full mb-4">
+                <h3 class="text-xl font-semibold">Alice Dupont</h3>
+                <p class="text-gray-600 italic">"Un outil incroyable qui m'a permis de créer mon CV en quelques minutes. Je recommande vivement !"</p>
+            </div>
+            <!-- Témoignage 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                <img src="image/m3.jpg" alt="Utilisateur 2" class="w-50 h-50 mx-auto rounded-full mb-4">
+                <h3 class="text-xl font-semibold">Marc Lemoine</h3>
+                <p class="text-gray-600 italic">"J'adore les modèles proposés ! Facile à utiliser et très efficace."</p>
+            </div>
+            <!-- Témoignage 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                <img src="image/c4-removebg-preview.png" alt="Utilisateur 3" class="w-50 h-50 mx-auto rounded-full mb-4">
+                <h3 class="text-xl font-semibold">Sophie Martin</h3>
+                <p class="text-gray-600 italic">"Un gain de temps énorme pour créer un CV professionnel en quelques clics !"</p>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-gray-800 text-white py-6 text-center">
-        <p>&copy; 2025 WEB NOVA. Tous droits réservés.</p>
-    </footer>
-
+    <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <img src="image/logo6-removebg-preview.png" alt="Logo" class="logo">
+          </div>
+          <div class="footer-links">
+            <ul>
+              <li><a href="#about">À propos</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <li><a href="#privacy-policy">Politique de confidentialité</a></li>
+              <li><a href="#terms-of-service">Conditions d'utilisation</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-socials">
+            <a href="https://facebook.com" target="_blank" class="social-icon"><img src="facebook-icon.png" alt="Facebook"></a>
+            <a href="https://twitter.com" target="_blank" class="social-icon"><img src="twitter-icon.png" alt="Twitter"></a>
+            <a href="https://instagram.com" target="_blank" class="social-icon"><img src="instagram-icon.png" alt="Instagram"></a>
+            <a href="https://linkedin.com" target="_blank" class="social-icon"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+          </div>
+        </div>
+        <div class="footer-legal">
+          <p>&copy; 2025 Web Nova - Tous droits réservés | <a href="#legal-notice">Mentions légales</a></p>
+        </div>
+        <div class="footer-contact">
+          <p>Besoin d'aide ? <a href="mailto:webnova@example.com">Contactez-nous</a></p>
+        </div>
+      </footer>
+      
+      
     <script>
         // Obtenez l'URL actuelle
         const currentPath = window.location.pathname;
@@ -129,7 +208,18 @@
           homeTitle.classList.add('active-title');
         }
       </script>
-    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".card").forEach(card => {
+                card.addEventListener("mouseover", () => {
+                    card.classList.add("scale-105", "shadow-2xl");
+                });
+                card.addEventListener("mouseout", () => {
+                    card.classList.remove("scale-105", "shadow-2xl");
+                });
+            });
+        });
+    </script>
       
       
     <script src="script.js"></script>
